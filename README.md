@@ -3,32 +3,35 @@
 just a simple tool that generates a circos plot from a bunch of fasta files
 
 # usuage
+0. the input files schould be named like `$genome_$sample.fasta` and the input fasta files should have the following header formt: `>contig-$number`
 1. clone this repo `git clone https://github.com/philippmuench/Donut.git`
 2. put your fasta (one or multipe) files in the `data/genomes/` folder
 3. add your Hidden Markov model file to `data/hmm/model.hmm`
-4. start the docker container `docker run -v /absolute/path/to/data/folder:/data philippmuench/easycircos`
+4. start the docker container `docker run -v /absolute/path/to/data/folder:/data philippmuench/donut`
 5. inspect the output written to `data/output/`
 
 # example output
-![image](data/output/circos.png)
+![image](data/output/comp_2.png)
 
 from outer to inner:
-- filled dots: CDS, unfilled dots: hypothetical CDS
 - GC content
-- hits to `data/hmm/model.hmm` based on hmmsearch against ORFs
+- gene density (black), hypothetical gene density (red)
+- match to HMM models against ORFs
+- links: similar ORF by blast
+- colored links: similar ORFs that cover full a HMM match 
 
 # development
 
 comment the entrypoint in `Dockerfile` out than build the docker image from scatch
 
 ```
-sudo docker build -t easycircos .
+sudo docker build -t donut .
 ```
 
 then start in interactive mode
 
 ```
-sudo docker run -it -v /home/pmuench/github.com/philippmuench/easycircos/data:/data easycircos
+sudo docker run -it -v /home/pmuench/github.com/philippmuench/easycircos/data:/data donut
 ```
 
 inside the docker image start the tool
